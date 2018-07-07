@@ -1,3 +1,3 @@
 # Model Viewer
 
-Simple web model viewer demo developed with [three.js](https://threejs.org/).
+Simple web model viewer developed with [three.js](https://threejs.org/).
