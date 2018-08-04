@@ -93,7 +93,9 @@ function createScene()
 	scene.add(directionalLight);
 
 	// Default object.
-	objLoader.load("models/teapot.obj", function( obj )
+	var modelNames = Array("models/bunny.obj", "models/teapot.obj", "models/monkey.obj");
+	var modelName = modelNames[Math.floor(Math.random() * modelNames.length)];
+	objLoader.load(modelName, function( obj )
 	{
 		object = obj;
 		initObject(object);
