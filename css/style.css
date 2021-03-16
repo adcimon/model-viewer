@@ -1,0 +1,15 @@
+body
+{
+	/* Space */
+	margin: 0;
+}
+
+canvas
+{
+	/* Layout */
+	display: block;
+
+	/* Size */
+	height: 100%;
+	width: 100%;
+}
