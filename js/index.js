@@ -1,9 +1,8 @@
-var renderer, scene, camera;
+var canvas, renderer;
+var scene, camera;
 var controls, gui, grid, axes;
-var reader, objLoader;
-var ambientLight, directionalLight;
-var phongMaterial;
-var object;
+var ambientLight, directionalLight, material;
+var object, reader, loader;
 
 var params =
 {
@@ -29,52 +28,43 @@ window.addEventListener("load", main);
 
 function main()
 {
+	initialize();
+	createScene();
+	createGUI();
+	render();
+}
+
+function initialize()
+{
 	// Loader.
 	reader = new FileReader();
-	objLoader = new THREE.OBJLoader();
-
-	// Material.
-	phongMaterial = new THREE.MeshPhongMaterial();
-	phongMaterial.flatShading = false;
-	phongMaterial.side = THREE.DoubleSide;
-	phongMaterial.wireframe = params.wireframe;
-	phongMaterial.color = new THREE.Color(params.diffuseColor);
-	phongMaterial.specular = new THREE.Color(params.specularColor);
-	phongMaterial.shininess = params.shininess;
+	loader = new THREE.OBJLoader();
 
 	// Renderer.
 	canvas = document.getElementById("canvas");
 	renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	// Scene.
-	scene = new THREE.Scene();
-	scene.background = new THREE.Color(params.backgroundColor);
-	createScene();
-
 	// Camera.
 	camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
 	camera.position.set(1.2, 2, 1.4);
 
 	// Controls.
-	// The second argument is a reference to the canvas to disable the controls when you click on the GUI.
 	controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-	// GUI.
-	createGUI();
-
-	animate();
 }
 
-function animate()
+function render()
 {
-	requestAnimationFrame(animate);
 	controls.update();
 	renderer.render(scene, camera);
+	requestAnimationFrame(render);
 }
 
 function createScene()
 {
+	scene = new THREE.Scene();
+	scene.background = new THREE.Color(params.backgroundColor);
+
 	// Grid.
 	let size = 8;
 	let divisions = 100;
@@ -96,10 +86,19 @@ function createScene()
 	directionalLight.target.position.set(0, 0, 0);
 	scene.add(directionalLight);
 
+	// Material.
+	material = new THREE.MeshPhongMaterial();
+	material.flatShading = false;
+	material.side = THREE.DoubleSide;
+	material.wireframe = params.wireframe;
+	material.color = new THREE.Color(params.diffuseColor);
+	material.specular = new THREE.Color(params.specularColor);
+	material.shininess = params.shininess;
+
 	// Default object.
 	let modelNames = Array("models/bunny.obj", "models/teapot.obj", "models/monkey.obj");
 	let modelName = modelNames[Math.floor(Math.random() * modelNames.length)];
-	objLoader.load(modelName, function( obj )
+	loader.load(modelName, function( obj )
 	{
 		object = obj;
 		initObject(object);
@@ -183,7 +182,7 @@ function createGUI()
 	modelFolder.add(params, "wireframe").name("Wireframe").onChange(function( wireframe )
 	{
 		params.wireframe = wireframe;
-		phongMaterial.wireframe = params.wireframe;
+		material.wireframe = params.wireframe;
 	});
 
 	modelFolder.add(params, "scale", 0, 5).name("Scale").onChange(function( scale )
@@ -195,19 +194,19 @@ function createGUI()
 	modelFolder.addColor(params, "diffuseColor").name("Diffuse Color").onChange(function( color )
 	{
 		params.diffuseColor = color;
-		phongMaterial.color = new THREE.Color(params.diffuseColor);
+		material.color = new THREE.Color(params.diffuseColor);
 	});
 
 	modelFolder.addColor(params, "specularColor").name("Specular Color").onChange(function( color )
 	{
 		params.specularColor = color;
-		phongMaterial.specular = new THREE.Color(params.specularColor);
+		material.specular = new THREE.Color(params.specularColor);
 	});
 
 	modelFolder.add(params, "shininess", 0, 100).name("Shininess").onChange(function( shininess )
 	{
 		params.shininess = shininess;
-		phongMaterial.shininess = params.shininess;
+		material.shininess = params.shininess;
 	});
 
 	// Load model button.
@@ -224,7 +223,7 @@ function createGUI()
 function onLoadModel( event )
 {
 	let result = reader.result;
-	let newObject = objLoader.parse(result);
+	let newObject = loader.parse(result);
 
 	if( object != null )
 	{
@@ -232,12 +231,12 @@ function onLoadModel( event )
 	}
 
 	object = newObject;
-	initObject(object);
+	initializeObject(object);
 
 	scene.add(object);
 }
 
-function initObject( obj )
+function initializeObject( obj )
 {
 	obj.visible = params.visible;
 	obj.scale.set(params.scale, params.scale, params.scale);
@@ -245,7 +244,7 @@ function initObject( obj )
 	{
 		if( child instanceof THREE.Mesh )
 		{
-			child.material = phongMaterial;
+			child.material = material;
 		}
 	});
 }
