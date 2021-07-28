@@ -101,7 +101,7 @@ function createScene()
 	loader.load(modelName, function( obj )
 	{
 		object = obj;
-		initObject(object);
+		initializeObject(object);
 		scene.add(object);
 	});
 }
