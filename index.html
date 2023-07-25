@@ -1,34 +1,55 @@
 <!DOCTYPE html>
 
 <html lang="en">
+	<head>
+		<title>Model Viewer</title>
 
-<head>
+		<meta charset="utf-8" />
 
-	<title>Model Viewer</title>
+		<meta
+			name="author"
+			content="" />
+		<meta
+			name="description"
+			content="" />
+		<meta
+			name="keywords"
+			content="" />
+		<meta
+			name="language"
+			content="en" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1" />
 
-	<meta charset="utf-8">
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="css/style.css" />
 
-	<meta name="author" content="">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<meta name="language" content="en">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script
+			type="text/javascript"
+			src="js/threejs/three.min.js"></script>
+		<script
+			type="text/javascript"
+			src="js/datgui/dat.gui.min.js"></script>
+		<script
+			type="text/javascript"
+			src="js/threejs/OrbitControls.js"></script>
+		<script
+			type="text/javascript"
+			src="js/threejs/OBJLoader.js"></script>
+		<script
+			type="text/javascript"
+			src="js/index.js"></script>
+	</head>
 
-	<link type="text/css" rel="stylesheet" href="css/style.css">
-
-	<script type="text/javascript" src="js/threejs/three.min.js"></script>
-	<script type="text/javascript" src="js/datgui/dat.gui.min.js"></script>
-	<script type="text/javascript" src="js/threejs/OrbitControls.js"></script>
-	<script type="text/javascript" src="js/threejs/OBJLoader.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
-
-</head>
-
-<body>
-
-	<canvas id="canvas">
-	<input id="input" type="file" accept=".obj" style="display:none"/>
-
-</body>
-
+	<body>
+		<canvas id="canvas" />
+		<input
+			id="input"
+			type="file"
+			accept=".obj"
+			style="display: none" />
+	</body>
 </html>

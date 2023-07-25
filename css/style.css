@@ -1,15 +1,9 @@
-body
-{
-	/* Space */
+body {
 	margin: 0;
 }
 
-canvas
-{
-	/* Layout */
+canvas {
 	display: block;
-
-	/* Size */
 	height: 100%;
 	width: 100%;
 }
